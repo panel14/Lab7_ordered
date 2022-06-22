@@ -16,7 +16,6 @@ public class ShowCommand implements Command {
     private final Printable printable;
 
     /**
-     //* @param vectorCollection collection
      * @param printable
      */
     public ShowCommand(Printable printable) {

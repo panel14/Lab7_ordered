@@ -1,7 +1,9 @@
 package itmo.userutils;
 
 import java.io.Serializable;
-
+/**
+ * class for storing data about the user
+ */
 public class User implements Serializable {
     private static final long serialVersionUID = 99L;
 

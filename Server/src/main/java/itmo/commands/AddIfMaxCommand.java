@@ -18,9 +18,9 @@ public class AddIfMaxCommand implements Command {
     private final User user;
 
     /**
-     //* @param vectorCollection collection
      * @param printable
      * @param studyGroup       group to add
+     * @param user             data of current user
      */
     public AddIfMaxCommand(Printable printable, StudyGroup studyGroup, User user) {
         this.printable = printable;

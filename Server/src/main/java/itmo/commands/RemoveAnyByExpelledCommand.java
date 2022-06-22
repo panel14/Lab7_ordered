@@ -18,9 +18,9 @@ public class RemoveAnyByExpelledCommand implements Command {
     private final User user;
 
     /**
-     //* @param vectorCollection collection
      * @param printable
      * @param expelledStudents the number of expelled students
+     * @param user             data of current user
      */
     public RemoveAnyByExpelledCommand(Printable printable, Integer expelledStudents, User user) {
         this.printable = printable;

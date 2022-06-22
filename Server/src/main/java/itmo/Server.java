@@ -15,12 +15,15 @@ public class Server {
 
     public static void main(String[] args) throws Exception {
 
+        //Конфигурация сервера
         DatagramSocket datagramSocket = new DatagramSocket(8181);
         ServerScan serverScan = new ServerScan(datagramSocket);
         ServerPrint serverPrint = new ServerPrint(datagramSocket, 0);
 
         ServerIO serverIO = new ServerIO(serverPrint, serverScan, datagramSocket);
 
+        //Принимаем данные с сокета, далее создаём отдельный поток для обработки
+        //Информацию, необходимую для дальнейшей обработки помещаем в ThreadInfo
         while (true) {
             String request = serverIO.readLine();
 

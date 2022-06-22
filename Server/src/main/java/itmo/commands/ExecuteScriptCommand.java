@@ -32,6 +32,7 @@ public class ExecuteScriptCommand implements Command {
      * @param printable
      * @param filename         file's name
      * @param fileContent
+     * @param user             data of current user
      */
     public ExecuteScriptCommand(Printable printable, String filename, String fileContent, User user) {
         this.printable = printable;

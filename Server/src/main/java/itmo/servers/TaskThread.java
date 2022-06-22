@@ -12,11 +12,20 @@ import itmo.utility.CommandInfo;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
+/**
+ * Request processing class
+ */
 public class TaskThread extends Thread {
     private final ThreadInfo info;
     private final ExecutorService writingThread;
     private final Request request;
 
+    /**
+     * public constructor
+     * @param info
+     * @param writingThread next handler
+     * @param request
+     */
     public TaskThread(ThreadInfo info, ExecutorService writingThread, Request request) {
         this.info = info;
         this.writingThread = writingThread;
@@ -27,6 +36,7 @@ public class TaskThread extends Thread {
     public void run(){
         String serverAnswer = "Unknown request.";
         try {
+            //Если пришёл запрос аутентификации/регистрации, проверяем пользователя запросом к бд
             if (request.requestType.equals(AuthenticationRequest.class)) {
                 AuthenticationRequest auth = (AuthenticationRequest) request.request;
                 User user = new User(auth.userData[0], auth.userData[1]);
@@ -39,6 +49,7 @@ public class TaskThread extends Thread {
                 if (response.result) serverAnswer = "Success";
                 else serverAnswer = response.comment;
             }
+            //Обработчики команд взяты из класса Controller
             if (request.requestType.equals(CommandInfoRequest.class)) {
                 CommandInfoRequest commandInfoRequest = (CommandInfoRequest) request.request;
                 DBResponse response = DataBase.isAuth(new User(commandInfoRequest.userData));
@@ -59,6 +70,7 @@ public class TaskThread extends Thread {
         } catch (Exception e) {
             serverAnswer = "Processing error:" + e.getMessage();
         }
+        //В любом случае передаём ответ дальше
         finally {
             writingThread.execute(new WritingThread(info, serverAnswer));
         }

@@ -16,9 +16,9 @@ public class RemoveByIdCommand implements Command {
     private final User user;
 
     /**
-     //* @param vectorCollection collection
      * @param printable
      * @param id               id
+     * @param user             data of current user
      */
     public RemoveByIdCommand(Printable printable, Integer id, User user) {
         this.printable = printable;

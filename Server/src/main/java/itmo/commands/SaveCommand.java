@@ -11,7 +11,6 @@ public class SaveCommand implements Command {
     private final Printable printable;
 
     /**
-     //* @param vectorCollection
      * @param printable
      */
     public SaveCommand( Printable printable) {

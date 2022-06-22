@@ -16,9 +16,9 @@ public class AddCommand implements Command {
     private final User user;
 
     /**
-     //* @param vectorCollection collection
      * @param printable
      * @param studyGroup       group to add
+     * @param user             data of current user
      */
     public AddCommand(Printable printable, StudyGroup studyGroup, User user) {
         this.printable = printable;

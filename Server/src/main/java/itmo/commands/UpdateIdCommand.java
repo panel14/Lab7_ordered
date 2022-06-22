@@ -18,10 +18,10 @@ public class UpdateIdCommand implements Command {
     private final User user;
 
     /**
-     //* @param vectorCollection collection
      * @param printable
      * @param id               id
      * @param studyGroup       studyGroup
+     * @param user             data of current user
      */
     public UpdateIdCommand( Printable printable, Integer id, StudyGroup studyGroup, User user) {
         this.printable = printable;

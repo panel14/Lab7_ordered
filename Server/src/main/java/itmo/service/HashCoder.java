@@ -5,9 +5,17 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * class for hashing user passwords
+ */
 public class HashCoder {
     private static final String ALGORYTHM = "SHA-224";
 
+    /**
+     * SHA-224 algorythm hashing
+     * @param data
+     * @return String represent of hash-password
+     */
     public static String encodeSHA224(String data) {
         try {
             MessageDigest messageDigest =MessageDigest.getInstance(ALGORYTHM);

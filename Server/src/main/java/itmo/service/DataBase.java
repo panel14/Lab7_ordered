@@ -9,7 +9,12 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+/**
+ *  class work with database
+ */
+
 public class DataBase {
+    //Данные для соединения с бд
     private static final String url = "jdbc:postgresql://localhost:9999/studs";
     private static String login = "login";
     private static String password = "password";
@@ -17,6 +22,7 @@ public class DataBase {
     private static Connection connection;
     private static boolean isConnected = false;
 
+    //SQL селекторы для запросов к бд
     private static final String IS_EXIST_REQUEST = "SELECT * FROM users WHERE login LIKE ?";
     private static final String IS_AUTH_REQUEST = "SELECT * FROM users WHERE login LIKE ? AND password LIKE ?";
     private static final String INSERT_USER_REQUEST = "INSERT INTO users (login, password) VALUES (?,?)";
@@ -38,6 +44,11 @@ public class DataBase {
             "owner)" +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+    //Чтение данных для подключения к бд (логин и пароль)
+    /**
+     * Method for reading connection data (login and password)
+     * @throws Exception
+     */
     private static void readData() throws Exception {
         Scannable reader = new FileScan("data.secret");
         String data = reader.readLine();
@@ -46,7 +57,10 @@ public class DataBase {
         reader.close();
     }
 
-
+    //Подключение к базе данных
+    /**
+     * Method establishes a connection to the database
+     */
     private static void connectDB() {
         try {
             readData();
@@ -60,6 +74,13 @@ public class DataBase {
         }
     }
 
+    //Проверка, существует ли пользователь
+    //Отправляем запрос к таблице users - если найден пользователь с данным логином - true, иначе false
+    /**
+     * check is user exist in database
+     * @param user is a user's data
+     * @return bool as result - does user exist
+     */
     public static boolean isExist(User user) {
         try {
             PreparedStatement checkStatement = connection.prepareStatement(IS_EXIST_REQUEST);
@@ -71,6 +92,14 @@ public class DataBase {
         }
     }
 
+    //Регистрация нового пользователя
+    //Проверяем соединение и существует ли данный пользователь
+    //Если соединение есть, и пользователя с таким логином нет в базе - добавляем его в базу
+    /**
+     * registers a user
+     * @param user is a user's data
+     * @return DBResponse object - boolean result of registration and String comment
+     */
     public static DBResponse register(User user) {
         if (!isConnected) connectDB();
         if (!isConnected) return new DBResponse(false, "Connection fault.");
@@ -89,6 +118,13 @@ public class DataBase {
         }
     }
 
+    //Проверяем, аутентифицирован ли пользователь
+    //Если такой логин есть в базе и пароли совпадают - пользователь прошёл аутентификацию
+    /**
+     * checks user authentication
+     * @param user user is a user's data
+     * @return DBResponse object - boolean result of authentication and String comment
+     */
     public static DBResponse isAuth(User user) {
         if (!isConnected) connectDB();
         if (!isConnected) return new DBResponse(false, "Connection fault.");
@@ -110,6 +146,12 @@ public class DataBase {
         }
     }
 
+    //Получаем коллекцию из базы данных с помощью SQL-запроса
+    //Из ResultSet построчно считываем данные в группу, группу добавляем в общую коллекцию
+    /**
+     * get collection from database
+     * @return collection
+     */
     public static VectorCollection<StudyGroup> getCollection() {
         if (!isConnected) connectDB();
         VectorCollection<StudyGroup> groups = new VectorCollection<>();
@@ -167,7 +209,13 @@ public class DataBase {
         return groups;
     }
 
+    //Сохраняем группу аналогично - собираем PreparedStatement из группы и отправляем на запись в бд
+    /**
+     * save group
+     * @param studyGroup is group that need to be saved
+     */
     public static void saveGroup(StudyGroup studyGroup) {
+        if (!isConnected) connectDB();
         try {
             PreparedStatement saveState = connection.prepareStatement(SAVE_COLLECTION);
             saveState.setString(1, studyGroup.getName());
@@ -207,6 +255,11 @@ public class DataBase {
         }
     }
 
+    //Поочереди с помощью вышеописанного метода сохраняем всю коллекцию
+    /**
+     * save all collection of groups
+     * @param collection is collection that need to be saved
+     */
     public static void saveCollection(VectorCollection<StudyGroup> collection) {
         try {
             connection.createStatement().executeUpdate("TRUNCATE groups");
@@ -216,6 +269,7 @@ public class DataBase {
             System.out.println("Saving fault: " + e.getMessage());
         }
     }
+
 
     public static void close() {
         try {

@@ -15,13 +15,10 @@ import java.io.IOException;
 public class ClearCommand implements Command {
     private final Printable printable;
     private final User user;
-    /**
-     * collection
-     */
 
     /**
      * @param printable
-     //* @param vectorCollection collection
+     * @param user                 data of current user
      */
     public ClearCommand(Printable printable, User user) {
         this.printable = printable;

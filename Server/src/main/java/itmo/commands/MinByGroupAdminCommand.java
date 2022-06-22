@@ -18,8 +18,8 @@ public class MinByGroupAdminCommand implements Command {
     private final User user;
 
     /**
-     //* @param vectorCollection collection
      * @param printable
+     * @param user             data of current user
      */
     public MinByGroupAdminCommand(Printable printable, User user) {
         this.printable = printable;

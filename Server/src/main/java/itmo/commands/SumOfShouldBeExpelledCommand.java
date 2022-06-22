@@ -20,7 +20,6 @@ public class SumOfShouldBeExpelledCommand implements Command {
     Long sum = 0L;
 
     /**
-     //* @param vectorCollection collection
      * @param printable
      */
     public SumOfShouldBeExpelledCommand(Printable printable) {
