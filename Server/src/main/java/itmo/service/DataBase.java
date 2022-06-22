@@ -103,7 +103,7 @@ public class DataBase {
     public static DBResponse register(User user) {
         if (!isConnected) connectDB();
         if (!isConnected) return new DBResponse(false, "Connection fault.");
-        if (isExist(user)) return new DBResponse(false, "User with this login already exists.") ;
+        if (isExist(user)) return new DBResponse(false, "User with this login already exists.");
         try {
             String hashPassword = HashCoder.encodeSHA224(user.password);
             PreparedStatement insertStatement = connection.prepareStatement(INSERT_USER_REQUEST);
@@ -139,7 +139,7 @@ public class DataBase {
             ResultSet checkSet = checkPasswordState.executeQuery();
             if (checkSet.next())
                 return new DBResponse(true, "User verified.");
-            else return new DBResponse(true, "Wrong password") ;
+            else return new DBResponse(false, "Wrong password.");
         } catch (SQLException e) {
             e.printStackTrace();
             return new DBResponse(false, "Failed to get user data.: " + e.getMessage());

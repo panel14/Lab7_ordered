@@ -12,12 +12,14 @@ import itmo.userutils.User;
 import itmo.utility.CommandArguments;
 import itmo.utility.CommandInfo;
 
+import java.util.ArrayList;
+
 /**
  * class helps to read commands
  */
 public class ClientCommandManager {
 
-    public void executeCommand(ClientPrint clientPrint, ClientScan clientScan, Scannable scannable, User user) throws Exception {
+    public boolean executeCommand(ClientPrint clientPrint, ClientScan clientScan, Scannable scannable, User user) throws Exception {
         String commandString = scannable.readLine();
         String[] words = commandString.trim().replaceAll("\\s{2,}", " ").trim().split(" ");
 
@@ -32,7 +34,8 @@ public class ClientCommandManager {
 
         CommandArguments arguments = CommandManager.readCommandArguments(words, commandInfo, new ConsoleScan(),
                 true, new String[] {user.login, user.password});
-        executeCommandRequest(clientPrint, clientScan, commandInfo, arguments, user);
+
+        return executeCommandRequest(clientPrint, clientScan, commandInfo, arguments, user);
     }
 
     private CommandInfo commandInfoRequest(ClientPrint clientPrint, ClientScan clientScan, String commandName,
@@ -50,7 +53,7 @@ public class ClientCommandManager {
         return commandInfo;
     }
 
-    private void executeCommandRequest(ClientPrint clientPrint, ClientScan clientScan, CommandInfo commandInfo,
+    private boolean executeCommandRequest(ClientPrint clientPrint, ClientScan clientScan, CommandInfo commandInfo,
                                        CommandArguments commandArguments, User user) throws Exception {
         CommandExecutionRequest commandExecutionRequest = new CommandExecutionRequest(commandInfo, commandArguments,
                 new String[] {user.login, user.password});
@@ -64,7 +67,12 @@ public class ClientCommandManager {
         clientPrint.println(jsonRequest);
         String commandOutPut = clientScan.readLine();
 
-
         System.out.println(Client.COLORS[(Client.COLOR_PTR++) % 7] + commandOutPut);
+
+        ArrayList<String> nonAuthResponses = new ArrayList<>();
+        nonAuthResponses.add("Wrong password.");
+        nonAuthResponses.add("There is no user with this login.");
+
+        return nonAuthResponses.contains(commandOutPut);
     }
 }

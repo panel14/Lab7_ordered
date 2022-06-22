@@ -57,7 +57,12 @@ public class Client {
         while (true) {
             System.out.println("Enter the command:");
             try {
-                clientCommandManager.executeCommand(clientPrint, clientScan, new ConsoleScan(), user);
+                if (clientCommandManager.executeCommand(clientPrint, clientScan, new ConsoleScan(), user)) {
+                    System.out.println("User not authorized");
+                    while ((user = UserIdentify.readUser(clientPrint, clientScan)) == null)
+                        System.out.println("Authorization fault.");
+                }
+
             } catch (ClientRuntimeException clientRuntimeException){
                 waitForConnection(clientPrint, clientScan);
             }

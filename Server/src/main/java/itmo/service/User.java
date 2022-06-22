@@ -12,6 +12,7 @@ public class User implements Serializable {
     public String password;
 
     public User() {}
+
     public User(String[] userData) {
         login = userData[0];
         password = userData[1];

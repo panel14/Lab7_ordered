@@ -40,7 +40,7 @@ public class UserIdentify {
                 case "help":
                     printer.println("-regis -> register a new user\n-auth -> sign up to old users");
                 default:
-                    printer.println("Некорректный ввод.");
+                    printer.println("Incorrect input.");
             }
         }
     }
@@ -96,10 +96,10 @@ public class UserIdentify {
      */
     private static String[] getInfo() throws Exception {
         printer.println("Enter login (4 to 12 characters): ");
-        String login = getValidString("^[a-zA-z0-9_]{5,17}$");
+        String login = getValidString("^[a-zA-Z0-9_]{4,17}$");
 
         printer.println("Enter password: (4 to 20 characters)");
-        String password = getValidString("^.{5,20}$");
+        String password = getValidString("^.{4,20}$");
 
         return new String[]{login, password};
     }
